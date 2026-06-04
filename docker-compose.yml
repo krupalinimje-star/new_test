@@ -1,29 +1,31 @@
-version: '3.8'
-
 services:
-  db:
-    image: postgres:16-alpine
-    container_name: crop_health_db
-    restart: always
-    environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
   web:
     build: .
-    container_name: crop_health_monitor
-    restart: always
-    env_file:
-      - .env
+    container_name: django_backend
+    command: python3 manage.py 0.0.0.0:8000
     ports:
       - "8000:8000"
     depends_on:
       - db
-
+    environment:
+      DEBUG: "0"
+      POSTGRES_DB: react_django_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_HOST: db
+    volumes:
+      - .:/app
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_DB: react_django_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 volumes:
   postgres_data:
