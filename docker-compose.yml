@@ -20,11 +20,11 @@ services:
     container_name: postgres_db
     restart: always
     environment:
-      POSTGRES_DB: react_django_db
+      POSTGRES_DB: mydatabase
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
     ports:
-      - "5432:5432"
+      - "5435:5435"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 volumes:
